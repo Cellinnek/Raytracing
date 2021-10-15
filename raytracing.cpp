@@ -1,5 +1,9 @@
 #include <vector>
-#include <math.h>z
+#include <math.h>
+#include <thread>
+
+using namespace std::literals::chrono_literals;
+
 int render_distance = 1000;
 int huj = 90;
 
@@ -41,27 +45,6 @@ public:
 
 
 
-//internal void
-//RayCube(u32 color, int ax, int bx, int ay, int by, int az, int bz) {
-//	Ray ray;
-//	float s = 1;
-//	float w = (render_state.width) / s / 2;
-//	float h = (render_state.height) / s / 2;
-//	for (float y = -h; y <= h; y += s) {
-//		for (float x = -w; x <= w; x += s) {
-//			ray.set(y, x, 0, 0 + (y / (h)), 0 + (x / (w)), 1);
-//			for (float n = 0; n <= 1200; n++) {
-//				ray.move();
-//				if (ray.x >= ax && ray.x <= bx && ray.y >= ay && ray.y <= by && ray.z >= az && ray.z <= bz && !(ray.x >= ax + 25 && ray.x <= bx - 25 && ray.y >= ay + 25 && ray.y <= by - 25 && ray.z >= az && ray.z <= bz)) {
-//					draw_rect((y + h) * s, (x + w) * s, (y + h) * s + 2 * s, (x + w) * s + 2 * s, color);
-//					break;
-//				}
-//			}
-//		}
-//	}
-//}
-
-
 class Cube {
 public:
 	float ax, bx, ay, by, az, bz;
@@ -85,9 +68,6 @@ public:
 
 
 
-
-
-
 int s = 4;
 int w = gw / s;
 int h = gh / s;
@@ -95,7 +75,6 @@ int moves = 300;
 int ls = 4;
 Cube cube1;
 std::vector<Ray> ray(w* h);
-
 
 
 
@@ -146,14 +125,3 @@ RayTrace(u32 color) {
 		}
 	}
 }
-
-
-//internal void
-//draw_rect(int x0, int y0, int x1, int y1, u32 color) {
-//	for (int y = y0; y < y1; y++) {
-//		u32* pixel = (u32*)render_state.memory + x0 + y * render_state.width;
-//		for (int x = x0; x < x1; x++) {
-//			*pixel++ = color;
-//		}
-//	}
-//}
