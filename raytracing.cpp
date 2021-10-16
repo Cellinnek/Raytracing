@@ -2,7 +2,7 @@
 #include <math.h>
 #include <thread>
 
-int render_distance = 1000;
+int render_distance = 2000;
 int huj = 90;
 
 class Ray {
@@ -66,10 +66,10 @@ public:
 
 
 
-int s = 4;
+int s = 3;
 int w = gw / s;
 int h = gh / s;
-int moves = 300;
+int moves = 400;
 int ls = 10;
 Cube cube1;
 std::vector<Ray> ray(w* h);
