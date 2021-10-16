@@ -16,14 +16,23 @@ simulate_game(Input* input, float dt) {
 	cube1.set(player_pos_y, (player_pos_y + size), player_pos_x, (player_pos_x + size), player_pos_z, (player_pos_z + size));
 	clear_screen(00000000);	
 	
-	MultiRayTracing();
+	
 
-	if (is_down(BUTTON_RIGHT)) player_pos_x -= speed * dt;
+	/*if (is_down(BUTTON_RIGHT)) player_pos_x -= speed * dt;
 	if (is_down(BUTTON_LEFT)) player_pos_x += speed * dt;
 	if (is_down(BUTTON_UP)) player_pos_z -= speed * dt;
 	if (is_down(BUTTON_DOWN)) player_pos_z += speed * dt;
 	if (is_down(BUTTON_SPACE)) player_pos_y -= speed * dt;
-	if (is_down(BUTTON_SHIFT)) player_pos_y += speed * dt;
+	if (is_down(BUTTON_SHIFT)) player_pos_y += speed * dt;*/
+
+
+	if (is_down(BUTTON_RIGHT)) cy += speed * dt;
+	if (is_down(BUTTON_LEFT)) cy -= speed * dt;
+	if (is_down(BUTTON_UP)) cz += speed * dt;
+	if (is_down(BUTTON_DOWN)) cz -= speed * dt;
+	if (is_down(BUTTON_SPACE)) cx += speed * dt;
+	if (is_down(BUTTON_SHIFT)) cx -= speed * dt;
+	MultiRayTracing();
 	/*float speed = 50.f; 
 	if (is_down(BUTTON_UP)) player_pos_y += speed*dt;
 	if (is_down(BUTTON_DOWN)) player_pos_y -= speed * dt;
