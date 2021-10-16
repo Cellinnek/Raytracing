@@ -126,13 +126,23 @@ RayTrace(u32 color, float stry,float strx, float bruh) {
 
 internal void
 MultiRayTracing() {
-	std::thread ray0(RayTrace, 0xffffff, 0, 0, 2);
-	std::thread ray1(RayTrace, 0xffffff, 0, 1, 2);
-	std::thread ray2(RayTrace, 0xffffff, 1, 0, 2);
-	std::thread ray3(RayTrace, 0xffffff, 1, 1, 2);
-	
+	std::thread ray0(RayTrace, 0xffffff, 0, 0, 3);
+	std::thread ray1(RayTrace, 0xffffff, 0, 1, 3);
+	std::thread ray2(RayTrace, 0xffffff, 0, 2, 3);
+	std::thread ray3(RayTrace, 0xffffff, 1, 0, 3);
+	std::thread ray4(RayTrace, 0xffffff, 1, 1, 3);
+	std::thread ray5(RayTrace, 0xffffff, 1, 2, 3);
+	std::thread ray6(RayTrace, 0xffffff, 2, 0, 3);
+	std::thread ray7(RayTrace, 0xffffff, 2, 1, 3);
+	std::thread ray8(RayTrace, 0xffffff, 2, 2, 3);
+
 	ray0.join();
 	ray1.join();
 	ray2.join();
 	ray3.join();
+	ray4.join();
+	ray5.join();
+	ray6.join();
+	ray7.join();
+	ray8.join();
 }
