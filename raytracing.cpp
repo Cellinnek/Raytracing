@@ -76,14 +76,19 @@ double s = 3;
 int w = gw / s;
 int h = gh / s;
 int moves = 100;
-double ls = 20;
+double ls = 10;
 Cube cube1;
 std::vector<Ray> ray(w* h);
 
 
+float cube_x = 40;
+float cube_y = 40;
+float cube_z = 100;
+float cube_size = 120;
 
 internal void
 InitRays() {
+	cube1.set(cube_y, (cube_y + cube_size), cube_x, (cube_x + cube_size), cube_z, (cube_z + cube_size));
 	for (double y = 0; y < w; y ++) {
 		for (double x = 0; x < h; x ++) {
 			ray[y*w+x].set(
@@ -96,7 +101,6 @@ InitRays() {
 		}
 	}
 }
-
 
 bool
 Colision(double yp, double xp) {
