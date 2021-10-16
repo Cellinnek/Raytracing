@@ -145,7 +145,6 @@ RayTrace(u32 color, double stry, double strx, double bruh) {
 	}
 }
 
-
 internal void
 MultiRayTracing() {
 	std::thread ray0(RayTrace, 0xffffff, 0, 0, 4);

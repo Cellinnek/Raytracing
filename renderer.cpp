@@ -8,7 +8,6 @@ render_background() {
 	}
 }
 
-
 internal void 
 clear_screen(u32 color) {
 	u32* pixel = (u32*)render_state.memory;
@@ -18,8 +17,6 @@ clear_screen(u32 color) {
 		}
 	}
 }
-
-
 
 internal void
 draw_rect_in_pixels(int x0, int y0, int x1, int y1, u32 color) {
@@ -36,29 +33,6 @@ draw_rect_in_pixels(int x0, int y0, int x1, int y1, u32 color) {
 		}
 	}
 }
-
-//global_variable float render_scale = 0.01f;
-
-//internal void
-//draw_rect(float x, float y, float half_size_x, float half_size_y, u32 color) {
-//
-//	x *= render_state.height * render_scale;
-//	y *= render_state.height * render_scale;
-//	half_size_x *= render_state.height * render_scale;
-//	half_size_y *= render_state.height * render_scale;
-//
-//	x += render_state.width / 2.f;
-//	y += render_state.height / 2.f;
-//
-//	// Change to pixels
-//	int x0 = x - half_size_x;
-//	int x1 = x + half_size_x;
-//	int y0 = y - half_size_y;
-//	int y1 = y + half_size_y;
-//
-//	draw_rect_in_pixels(x0, y0, x1, y1, color);
-//}
-
 
 void
 draw_rect(int x0, int y0, int x1, int y1, u32 color) {

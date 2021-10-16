@@ -2,11 +2,7 @@
 #define pressed(b) (input->buttons[b].is_down && input->buttons[b].changed)
 #define released(b) (!input->buttons[b].is_down && input->buttons[b].changed)
 
-
-
-
 float speed = 100;
-
 
 internal void
 simulate_game(Input* input, float dt) {
