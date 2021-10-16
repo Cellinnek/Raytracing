@@ -3,6 +3,7 @@
 #define released(b) (!input->buttons[b].is_down && input->buttons[b].changed)
 
 
+
 float player_pos_x = 40;
 float player_pos_y = 40;
 float player_pos_z = 100;
@@ -15,7 +16,7 @@ simulate_game(Input* input, float dt) {
 	cube1.set(player_pos_y, (player_pos_y + size), player_pos_x, (player_pos_x + size), player_pos_z, (player_pos_z + size));
 	clear_screen(00000000);	
 	
-	RayTrace(0xffffff);
+	MultiRayTracing();
 
 	if (is_down(BUTTON_RIGHT)) player_pos_x -= speed * dt;
 	if (is_down(BUTTON_LEFT)) player_pos_x += speed * dt;

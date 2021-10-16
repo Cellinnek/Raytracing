@@ -2,8 +2,6 @@
 #include <math.h>
 #include <thread>
 
-using namespace std::literals::chrono_literals;
-
 int render_distance = 1000;
 int huj = 90;
 
@@ -72,7 +70,7 @@ int s = 4;
 int w = gw / s;
 int h = gh / s;
 int moves = 300;
-int ls = 4;
+int ls = 10;
 Cube cube1;
 std::vector<Ray> ray(w* h);
 
@@ -93,7 +91,6 @@ InitRays() {
 }
 
 
-
 bool
 Colision(float y, float x) {
 	if (ray[y * w + x].x >= cube1.ax && 
@@ -105,10 +102,10 @@ Colision(float y, float x) {
 	else return false;
 }
 
-internal void
-RayTrace(u32 color) {
-	for (float y = 0; y < render_state.height/s; y ++) {
-		for (float x = 0; x < render_state.width/s; x ++) {
+void
+RayTrace(u32 color, float stry,float strx, float bruh) {
+	for (float y = stry; y < render_state.height/s; y += bruh) {
+		for (float x = strx; x < render_state.width/s; x += bruh) {
 			for (int i = 0; i <= moves; i++) {
 				ray[y * w + x].move();
 				/*u32* pixel = (u32*)render_state.memory + (int)x + (int)y * render_state.width;*/
@@ -124,4 +121,18 @@ RayTrace(u32 color) {
 			
 		}
 	}
+}
+
+
+internal void
+MultiRayTracing() {
+	std::thread ray0(RayTrace, 0xffffff, 0, 0, 2);
+	std::thread ray1(RayTrace, 0xffffff, 0, 1, 2);
+	std::thread ray2(RayTrace, 0xffffff, 1, 0, 2);
+	std::thread ray3(RayTrace, 0xffffff, 1, 1, 2);
+	
+	ray0.join();
+	ray1.join();
+	ray2.join();
+	ray3.join();
 }
