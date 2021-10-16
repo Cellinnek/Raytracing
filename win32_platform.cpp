@@ -120,6 +120,8 @@ input.buttons[b].is_down = is_down;\
 						process_button(BUTTON_RIGHT, VK_RIGHT);
 						process_button(BUTTON_SPACE, VK_SPACE);
 						process_button(BUTTON_SHIFT, VK_SHIFT);
+						process_button(BUTTON_A, 'A');
+						process_button(BUTTON_D, 'D');
 					}
 				} break;
 

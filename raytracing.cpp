@@ -4,6 +4,7 @@
 
 double render_distance =2000;
 double huj = 200;
+double zs_change=0, xs_change=0, ys_change=0;
 global_variable double cx=0, cy=0, cz=0;
 
 class Ray {
@@ -129,18 +130,15 @@ RayTrace(u32 color, double stry, double strx, double bruh) {
 		for (double x = strx; x < render_state.width/s-1; x += bruh) {
 			for (int i = 0; i <= moves; i++) {
 				ray[y * w + x].move();
-				/*u32* pixel = (u32*)render_state.memory + (int)x + (int)y * render_state.width;*/
 				if (Colision(y, x)) {
 					draw_rect(x*s,y*s,x*s+s,y*s+s,color);
-					/**pixel++ = color;*/
 					ray[y * w + x].reset();
 					break;
 				}
-				/*else draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);*/
-				
+				ray[y * w + x].xs += xs_change;
+				ray[y * w + x].zs += zs_change;
+				ray[y * w + x].ys += ys_change;	
 			}
-
-			
 		}
 	}
 }
