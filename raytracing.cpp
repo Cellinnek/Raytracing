@@ -2,7 +2,7 @@
 #include <math.h>
 #include <thread>
 
-int render_distance = 2000;
+int render_distance = 1000;
 int huj = 90;
 
 class Ray {
@@ -41,8 +41,6 @@ public:
 	}
 };
 
-
-
 class Cube {
 public:
 	float ax, bx, ay, by, az, bz;
@@ -64,12 +62,22 @@ public:
 	}
 };
 
-
+class Sphere {
+public:
+	float x, y, z, r;
+	
+	void set(float a,float b,float c,float d) {
+		x = a;
+		y = b;
+		z = c;
+		r = d;
+	}
+};
 
 int s = 3;
 int w = gw / s;
 int h = gh / s;
-int moves = 400;
+int moves = 100;
 int ls = 10;
 Cube cube1;
 std::vector<Ray> ray(w* h);
@@ -100,6 +108,7 @@ Colision(float y, float x) {
 		ray[y * w + x].z >= cube1.az && 
 		ray[y * w + x].z <= cube1.bz) return true;
 	else return false;
+	
 }
 
 void
@@ -126,15 +135,22 @@ RayTrace(u32 color, float stry,float strx, float bruh) {
 
 internal void
 MultiRayTracing() {
-	std::thread ray0(RayTrace, 0xffffff, 0, 0, 3);
-	std::thread ray1(RayTrace, 0xffffff, 0, 1, 3);
-	std::thread ray2(RayTrace, 0xffffff, 0, 2, 3);
-	std::thread ray3(RayTrace, 0xffffff, 1, 0, 3);
-	std::thread ray4(RayTrace, 0xffffff, 1, 1, 3);
-	std::thread ray5(RayTrace, 0xffffff, 1, 2, 3);
-	std::thread ray6(RayTrace, 0xffffff, 2, 0, 3);
-	std::thread ray7(RayTrace, 0xffffff, 2, 1, 3);
-	std::thread ray8(RayTrace, 0xffffff, 2, 2, 3);
+	std::thread ray0(RayTrace, 0xffffff, 0, 0, 4);
+	std::thread ray1(RayTrace, 0xffffff, 0, 1, 4);
+	std::thread ray2(RayTrace, 0xffffff, 0, 2, 4);
+	std::thread ray3(RayTrace, 0xffffff, 0, 3, 4);
+	std::thread ray4(RayTrace, 0xffffff, 1, 0, 4);
+	std::thread ray5(RayTrace, 0xffffff, 1, 1, 4);
+	std::thread ray6(RayTrace, 0xffffff, 1, 2, 4);
+	std::thread ray7(RayTrace, 0xffffff, 1, 3, 4);
+	std::thread ray8(RayTrace, 0xffffff, 2, 0, 4);
+	std::thread ray9(RayTrace, 0xffffff, 2, 1, 4);
+	std::thread ray10(RayTrace, 0xffffff, 2, 2, 4);
+	std::thread ray11(RayTrace, 0xffffff, 2, 3, 4);
+	std::thread ray12(RayTrace, 0xffffff, 3, 0, 4);
+	std::thread ray13(RayTrace, 0xffffff, 3, 1, 4);
+	std::thread ray14(RayTrace, 0xffffff, 3, 2, 4);
+	std::thread ray15(RayTrace, 0xffffff, 3, 3, 4);
 
 	ray0.join();
 	ray1.join();
@@ -145,4 +161,11 @@ MultiRayTracing() {
 	ray6.join();
 	ray7.join();
 	ray8.join();
+	ray9.join();
+	ray10.join();
+	ray11.join();
+	ray12.join();
+	ray13.join();
+	ray14.join();
+	ray15.join();
 }
