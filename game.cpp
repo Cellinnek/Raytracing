@@ -8,11 +8,22 @@ internal void
 simulate_game(Input* input, float dt) {
 	
 	clear_screen(00000000);	
-	
-	if (is_down(BUTTON_RIGHT)) cx += speed * dt;
-	if (is_down(BUTTON_LEFT)) cx -= speed * dt;
-	if (is_down(BUTTON_UP)) cz += speed * dt;
-	if (is_down(BUTTON_DOWN)) cz -= speed * dt;
+	if (is_down(BUTTON_RIGHT)) {
+		cx += cos((angle_change_z)*PI / 180) * speed * dt;
+		cz -= sin((angle_change_z)*PI / 180) * speed * dt;
+	}
+	if (is_down(BUTTON_LEFT)) {
+		cx -= cos((angle_change_z)*PI / 180) * speed * dt;
+		cz += sin((angle_change_z)*PI / 180) * speed * dt;
+	}
+	if (is_down(BUTTON_UP)) {
+		cx += sin((angle_change_z)*PI / 180) * speed * dt;
+		cz += cos((angle_change_z)*PI / 180) * speed * dt;
+	}
+	if (is_down(BUTTON_DOWN)) {
+		cx -= sin((angle_change_z)*PI / 180) * speed * dt;
+		cz -= cos((angle_change_z)*PI / 180) * speed * dt;
+	}
 	if (is_down(BUTTON_SPACE)) cy += speed * dt;
 	if (is_down(BUTTON_SHIFT)) cy -= speed * dt;
 	if (is_down(BUTTON_A)) angle_change_z += 1;
