@@ -1,37 +1,48 @@
 #include <vector>
 #include <math.h>
 #include <thread>
+#define PI 3.14159265
 
-double render_distance =2000;
+double render_distance = 2000;
 double huj = 200;
-double zs_change=0, xs_change=0, ys_change=0;
 global_variable double cx=0, cy=0, cz=0;
+double s = 4;
+int w = gw / s;
+int h = gh / s;
+int moves = 200;
+double ls = 10;
+double cube_x = 40;
+double cube_y = 40;
+double cube_z = 100;
+double cube_size = 120;
+double angle = 20;
+int angle_change_z = 0;
+int angle_change_x = 0;
 
 class Ray {
 public:
-	float x, y, z, xs, ys, zs;
+	double x, y, z, r_z_angle, r_x_angle;
 	void move() {
-		x += xs;
-		y += ys;
-		z += zs;
-		/*if (sqrt(sqrt((x-huj) * (x - huj) + (y - huj) * (y - huj)) * (sqrt((x - huj) * (x - huj) + (y - huj) * (y - huj))) + z * z) > render_distance) {
-			x = cx;
-			y = cy;
-			z = cz;
-		}*/
-		if (z-cz > render_distance) {
+		x += sin((r_z_angle + angle_change_z) * PI / 180) * ls;
+		y += sin((r_x_angle + angle_change_x) * PI / 180) * ls;
+		z += cos((r_z_angle + angle_change_z) * PI / 180) * ls;
+		if (sqrt(sqrt((x-huj) * (x - huj) + (y - huj) * (y - huj)) * (sqrt((x - huj) * (x - huj) + (y - huj) * (y - huj))) + z * z) > render_distance) {
 			x = cx;
 			y = cy;
 			z = cz;
 		}
+		//if (z-cz > render_distance) {
+		//	x = cx;
+		//	y = cy;
+		//	z = cz;
+		//}
 	}
-	void set(double a, double b, double c, double d, double e, double f) {
+	void set(double a, double b, double c, double d, double e) {
 		x = a;
 		y = b;
 		z = c;
-		xs = d;
-		ys = e;
-		zs = f;
+		r_z_angle = d;
+		r_x_angle = e;
 	}
 	void reset() {
 		x = cx;
@@ -42,7 +53,7 @@ public:
 
 class Cube {
 public:
-	float ax, bx, ay, by, az, bz;
+	double ax, bx, ay, by, az, bz;
 	void set(double a, double b, double c, double d, double e, double f) {
 		ax = a;
 		bx = b;
@@ -60,10 +71,9 @@ public:
 		bz += zs;
 	}
 };
-
 class Sphere {
 public:
-	float x, y, z, r;
+	double x, y, z, r;
 	
 	void set(double a, double b, double c, double d) {
 		x = a;
@@ -73,32 +83,22 @@ public:
 	}
 };
 
-double s = 3;
-int w = gw / s;
-int h = gh / s;
-int moves = 100;
-double ls = 10;
-Cube cube1;
+
 std::vector<Ray> ray(w* h);
+Cube cube1;
 
-
-float cube_x = 40;
-float cube_y = 40;
-float cube_z = 100;
-float cube_size = 120;
 
 internal void
 InitRays() {
 	cube1.set(cube_y, (cube_y + cube_size), cube_x, (cube_x + cube_size), cube_z, (cube_z + cube_size));
-	for (double y = 0; y < w; y ++) {
-		for (double x = 0; x < h; x ++) {
-			ray[y*w+x].set(
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			ray[y * w + x].set(
 				0,
 				0,
 				0,
-				(ls*(y-h/2) / h),
-				(ls*(x - w / 2) / w),
-				ls);
+				(((double)x - w / 2) / w) * 2 * angle,
+				(((double)y - h / 2) / h) * 2 * angle);
 		}
 	}
 }
@@ -117,9 +117,8 @@ Colision(double yp, double xp) {
 		z <= cube1.bz) return true;
 	if (
 		sqrt(
-			sqrt((x) * (x) + (y) * (y)) *
-			sqrt((x) * (x) + (y) * (y))
-			+ (z+huj) * (z+huj)) < 50)return true;
+			(x*x + y*y)
+			+z*z) < 50) return true;
 	return false;
 	
 }
@@ -127,7 +126,7 @@ Colision(double yp, double xp) {
 void
 RayTrace(u32 color, double stry, double strx, double bruh) {
 	for (double y = stry; y < render_state.height/s; y += bruh) {
-		for (double x = strx; x < render_state.width/s-1; x += bruh) {
+		for (double x = strx; x < render_state.width/s; x += bruh) {
 			for (int i = 0; i <= moves; i++) {
 				ray[y * w + x].move();
 				if (Colision(y, x)) {
@@ -135,9 +134,6 @@ RayTrace(u32 color, double stry, double strx, double bruh) {
 					ray[y * w + x].reset();
 					break;
 				}
-				ray[y * w + x].xs += xs_change;
-				ray[y * w + x].zs += zs_change;
-				ray[y * w + x].ys += ys_change;	
 			}
 		}
 	}

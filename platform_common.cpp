@@ -12,6 +12,8 @@ enum {
 	BUTTON_SHIFT,
 	BUTTON_A,
 	BUTTON_D,
+	BUTTON_W,
+	BUTTON_S,
 
 	BUTTON_COUNT, // Should be the last item
 };
