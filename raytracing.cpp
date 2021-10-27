@@ -3,21 +3,23 @@
 #include <thread>
 #define PI 3.14159265
 
-double render_distance = 2000;
+double render_distance = 3000;
 double huj = 200;
-global_variable double cx=0, cy=0, cz=0;
+double cx = 0;
+double cy = 0;
+double cz = 0;
 double s = 4;
 int w = gw / s;
 int h = gh / s;
-int moves = 200;
 double ls = 10;
+int moves = render_distance/ls;
 double cube_x = 40;
 double cube_y = 40;
 double cube_z = 100;
 double cube_size = 120;
 double angle = 20;
-int angle_change_z = 0;
-int angle_change_x = 0;
+float angle_change_z = 0;
+float angle_change_x = 0;
 
 class Ray {
 public:
@@ -26,21 +28,16 @@ public:
 		x += sin((r_z_angle + angle_change_z) * PI / 180) * ls;
 		y += sin((r_x_angle + angle_change_x) * PI / 180) * ls;
 		z += cos((r_z_angle + angle_change_z) * PI / 180) * ls;
-		if (sqrt(sqrt((x-huj) * (x - huj) + (y - huj) * (y - huj)) * (sqrt((x - huj) * (x - huj) + (y - huj) * (y - huj))) + z * z) > render_distance) {
+		if (sqrt(sqrt((x-cx) * (x - cx) + (y - cy) * (y - cy)) * (sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy))) + (z- cz) * (z-cz)) > render_distance) {
 			x = cx;
 			y = cy;
 			z = cz;
 		}
-		//if (z-cz > render_distance) {
-		//	x = cx;
-		//	y = cy;
-		//	z = cz;
-		//}
 	}
-	void set(double a, double b, double c, double d, double e) {
-		x = a;
-		y = b;
-		z = c;
+	void set(/*double a, double b, double c,*/ double d, double e) {
+		//x = a;
+		//y = b;
+		//z = c;
 		r_z_angle = d;
 		r_x_angle = e;
 	}
@@ -94,9 +91,9 @@ InitRays() {
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
 			ray[y * w + x].set(
-				0,
-				0,
-				0,
+				//0,
+				//0,
+				//0,
 				(((double)x - w / 2) / w) * 2 * angle,
 				(((double)y - h / 2) / h) * 2 * angle);
 		}
@@ -118,7 +115,7 @@ Colision(double yp, double xp) {
 	if (
 		sqrt(
 			(x*x + y*y)
-			+z*z) < 50) return true;
+			+(z-500)*(z-500)) < 50) return true;
 	return false;
 	
 }
