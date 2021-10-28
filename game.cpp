@@ -24,10 +24,16 @@ simulate_game(Input* input, float dt) {
 		cx -= sin((angle_change_z)*PI / 180) * speed * dt;
 		cz -= cos((angle_change_z)*PI / 180) * speed * dt;
 	}
-	if (is_down(BUTTON_SPACE)) cy += speed * dt;
-	if (is_down(BUTTON_SHIFT)) cy -= speed * dt;
-	if (is_down(BUTTON_A)) angle_change_z += 1;
-	if (is_down(BUTTON_D)) angle_change_z -= 1;
+	if (is_down(BUTTON_SPACE)) {
+		cy += sin((angle_change_x)*PI / 180) * speed * dt;
+		cy += cos((angle_change_x)*PI / 180) * speed * dt;
+	}
+	if (is_down(BUTTON_SHIFT)) {
+		cy -= sin((angle_change_x)*PI / 180) * speed * dt;
+		cy -= cos((angle_change_x)*PI / 180) * speed * dt;
+	}
+	if (is_down(BUTTON_A)) angle_change_z += 4;
+	if (is_down(BUTTON_D)) angle_change_z -= 4;
 	//if (is_down(BUTTON_W)) angle_change_x += 1;
 	//if (is_down(BUTTON_S)) angle_change_x -= 1;
 	

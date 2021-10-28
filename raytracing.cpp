@@ -3,15 +3,15 @@
 #include <thread>
 #define PI 3.14159265
 
-double render_distance = 3000;
+double render_distance = 1000;
 double huj = 200;
 double cx = 0;
 double cy = 0;
 double cz = 0;
-double s = 4;
+int s = 5;
 int w = gw / s;
 int h = gh / s;
-double ls = 10;
+double ls = 4;
 int moves = render_distance/ls;
 double cube_x = 40;
 double cube_y = 40;
@@ -116,14 +116,15 @@ Colision(double yp, double xp) {
 		sqrt(
 			(x*x + y*y)
 			+(z-500)*(z-500)) < 50) return true;
+	//if (y <= -200 && y >= -210) return true;
 	return false;
 	
 }
 
 void
-RayTrace(u32 color, double stry, double strx, double bruh) {
-	for (double y = stry; y < render_state.height/s; y += bruh) {
-		for (double x = strx; x < render_state.width/s; x += bruh) {
+RayTrace(u32 color, int stry, int strx, double bruh) {
+	for (int y = stry; y < render_state.height/s; y += bruh) {
+		for (int x = strx; x < render_state.width/s; x += bruh) {
 			for (int i = 0; i <= moves; i++) {
 				ray[y * w + x].move();
 				if (Colision(y, x)) {
