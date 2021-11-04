@@ -1,10 +1,11 @@
 #include <vector>
 #include <math.h>
 #include <thread>
+#include <stdlib.h> 
 #define PI 3.14159265
 
-double render_distance = 1000;
-double huj = 200;
+double render_distance = 800;
+//double huj = 1000;
 double cx = 0;
 double cy = 0;
 double cz = 0;
@@ -12,27 +13,33 @@ int s = 5;
 int w = gw / s;
 int h = gh / s;
 double ls = 4;
-int moves = render_distance/ls;
-double cube_x = 40;
-double cube_y = 40;
-double cube_z = 100;
-double cube_size = 120;
-double angle = 20;
+int moves = render_distance/ls*2;
+double cube_x = -100;
+double cube_y = 60;
+double cube_z = 200;
+double cube_size = 500;
+double angle = 26.5;
 float angle_change_z = 0;
 float angle_change_x = 0;
 
 class Ray {
 public:
-	double x, y, z, r_z_angle, r_x_angle;
+	double a, b,c,d, x, y, z, s_r_z_angle, s_r_x_angle, r_z_angle, r_x_angle, hx, hy, hz,hx2,hz2,hy2;
 	void move() {
-		x += sin((r_z_angle + angle_change_z) * PI / 180) * ls;
-		y += sin((r_x_angle + angle_change_x) * PI / 180) * ls;
-		z += cos((r_z_angle + angle_change_z) * PI / 180) * ls;
-		if (sqrt(sqrt((x-cx) * (x - cx) + (y - cy) * (y - cy)) * (sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy))) + (z- cz) * (z-cz)) > render_distance) {
+		
+		c = cos((a)*PI / 180) * ls;
+		y += sin((a) * PI / 180) * ls;
+		x += sin((b) * PI / 180) * c;
+		z += cos((b) * PI / 180) * c;
+		if (sqrt((x-cx) * (x - cx) + (y - cy) * (y - cy) + (z- cz) * (z-cz)) > render_distance) {
 			x = cx;
 			y = cy;
 			z = cz;
+			a = (r_x_angle + angle_change_x);
+			b = (r_z_angle + angle_change_z);
+			
 		}
+		
 	}
 	void set(/*double a, double b, double c,*/ double d, double e) {
 		//x = a;
@@ -40,11 +47,25 @@ public:
 		//z = c;
 		r_z_angle = d;
 		r_x_angle = e;
+		s_r_z_angle = d;
+		s_r_x_angle = e;
+
 	}
 	void reset() {
+		r_z_angle = s_r_z_angle;
+		r_x_angle = s_r_x_angle;
 		x = cx;
 		y = cy;
 		z = cz;
+		/*hx = 0; hy = 0; hz = 0; hx2 = 0; hz2 = 0; hy2 = 0;*/
+		a = (r_x_angle + angle_change_x);
+		b = (r_z_angle + angle_change_z);
+	}
+	void hit() {
+		
+		hx = x;
+		hy = y;
+		hz = z;
 	}
 };
 
@@ -106,18 +127,32 @@ Colision(double yp, double xp) {
 	double y = ray[yp * w + xp].y;
 	double z = ray[yp * w + xp].z;
 
-	if( x >= cube1.ax &&
-		x <= cube1.bx &&
-		y >= cube1.ay &&
-		y <= cube1.by &&
-		z >= cube1.az &&
-		z <= cube1.bz) return true;
-	if (
-		sqrt(
-			(x*x + y*y)
-			+(z-500)*(z-500)) < 50) return true;
-	//if (y <= -200 && y >= -210) return true;
+	if(x >= cube1.ax &&
+	x <= cube1.bx &&
+	y >= cube1.ay &&
+	y <= cube1.by &&
+	z >= cube1.az &&
+	z <= cube1.bz) {
+		ray[yp * w + xp].hit();
+		if (yp * w + xp - 1 > -1) {
+			ray[yp * w + xp].hx2 = ray[yp * w + xp - 1].hx;
+			ray[yp * w + xp].hx2 = ray[yp * w + xp - 1].hz;
+			ray[yp * w + xp].hy2 = ray[yp * w + xp - 1].hy;
+			float c = atan2((ray[yp * w + xp].hx- ray[yp * w + xp-1].hx)/ ray[yp * w + xp - 1].hz, (ray[yp * w + xp].hz - ray[yp * w + xp - 1].hz));
+			ray[yp * w + xp].b = (2*c/PI*180)- ray[yp * w + xp].b;
+			
+		}
+			return false;
+			
+	}
+	
+	if (sqrt((x * x + y * y) + (z - 500) * (z - 500)) < 50) {
+		return true;
+	}
+	if (y <= -200 && y >= -205 && (((int)(x+2000)%100>=50 || (int)(z+2000)%100>=50)&& !((int)(x + 2000) % 100 >= 50 && (int)(z + 2000) % 100 >= 50))) return true;
 	return false;
+	
+	
 	
 }
 
@@ -126,12 +161,14 @@ RayTrace(u32 color, int stry, int strx, double bruh) {
 	for (int y = stry; y < render_state.height/s; y += bruh) {
 		for (int x = strx; x < render_state.width/s; x += bruh) {
 			for (int i = 0; i <= moves; i++) {
-				ray[y * w + x].move();
 				if (Colision(y, x)) {
+					
 					draw_rect(x*s,y*s,x*s+s,y*s+s,color);
+					
 					ray[y * w + x].reset();
 					break;
 				}
+				ray[y * w + x].move();
 			}
 		}
 	}

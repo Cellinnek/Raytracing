@@ -64,7 +64,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 	RegisterClass(&window_class);
 
 	// Create Window
-	HWND window = CreateWindow(window_class.lpszClassName,"RayTracingTest", WS_VISIBLE | WS_BORDER, 640, 350,gh, gw, 0,0, hInstance, 0);
+	HWND window = CreateWindow(window_class.lpszClassName,"RayTracingTest", WS_VISIBLE | WS_BORDER, CW_USEDEFAULT, CW_USEDEFAULT, gh, gw, 0,0, hInstance, 0);
 	
 
 	//{
