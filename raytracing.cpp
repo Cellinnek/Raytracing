@@ -156,16 +156,16 @@ Colision(double yp, double xp) {
 		y <= cube2.by &&
 		z >= cube2.az &&
 		z <= cube2.bz) {
-		ray[yp * w + xp].color = 0xff00ff;
+		ray[yp * w + xp].color = 0x945094;
 		return true;
 	}
 	
 	if (sqrt((x * x + y * y) + (z - 500) * (z - 500)) < 50) {
-		ray[yp * w + xp].color = 0xffff00;
+		ray[yp * w + xp].color = 0x507065;
 		return true;
 	}
 	if (y <= -200 && y >= -205 && (((int)(x + 2000) % 100 >= 50 || (int)(z + 2000) % 100 >= 50) && !((int)(x + 2000) % 100 >= 50 && (int)(z + 2000) % 100 >= 50))) {
-		ray[yp * w + xp].color = 0xffffff;
+		ray[yp * w + xp].color = 0xffffdf;
 		return true;
 	}
 	return false;
