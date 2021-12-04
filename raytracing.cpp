@@ -13,8 +13,8 @@ int s = 5;
 int w = gw / s;
 int h = gh / s;
 double ls = 5;
-int moves = 3;
-int moves2 = 3;
+int moves = 5;
+int moves2 = 5;
 double cube_x = -100;
 double cube_y = 60;
 double cube_z = 200;
@@ -26,7 +26,8 @@ float angle_change_y = 0;
 
 class Ray {
 public:
-	double a, b, e, x, y, z, s_r_z_angle, s_r_y_angle, r_z_angle, r_y_angle, hx, hy, hz;
+	double a, b, e, x, y, z, s_r_z_angle, s_r_y_angle, r_z_angle, r_y_angle, hx, hy, hz; 
+	u32 color;
 	bool move() {
 		x += sin((b) * PI / 180) * cos((a)*PI / 180) * ls;
 		y += sin((a) * PI / 180) * ls;
@@ -155,15 +156,19 @@ Colision(double yp, double xp) {
 		y <= cube2.by &&
 		z >= cube2.az &&
 		z <= cube2.bz) {
+		ray[yp * w + xp].color = 0xff00ff;
 		return true;
 	}
 	
 	if (sqrt((x * x + y * y) + (z - 500) * (z - 500)) < 50) {
+		ray[yp * w + xp].color = 0xffff00;
 		return true;
 	}
-	if (y <= -200 && y >= -205 && (((int)(x+2000)%100>=50 || (int)(z+2000)%100>=50)&& !((int)(x + 2000) % 100 >= 50 && (int)(z + 2000) % 100 >= 50))) return true;
+	if (y <= -200 && y >= -205 && (((int)(x + 2000) % 100 >= 50 || (int)(z + 2000) % 100 >= 50) && !((int)(x + 2000) % 100 >= 50 && (int)(z + 2000) % 100 >= 50))) {
+		ray[yp * w + xp].color = 0xffffff;
+		return true;
+	}
 	return false;
-	draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);
 	
 	
 }
@@ -192,7 +197,7 @@ RayTrace(u32 color, int stry, int strx, int bruh) {
 			for (int x = strx; x < render_state.width / s; x += bruh) {
 				for (int j = 0; j <= moves2; j++) {
 					if (Colision(y, x)) {
-						draw_rect(x * s, y * s, x * s + s, y * s + s, color);
+						draw_rect(x * s, y * s, x * s + s, y * s + s, ray[y * w + x].color);
 						ray[y * w + x].reset();
 						break;
 					}
