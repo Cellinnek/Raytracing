@@ -4,7 +4,7 @@
 #include <stdlib.h> 
 #define PI 3.14159265
 
-double render_distance = 3000;
+double render_distance = 2000;
 //double huj = 1000;
 double cx = 0;
 double cy = 0;
@@ -13,11 +13,13 @@ int s = 5;
 int w = gw / s;
 int h = gh / s;
 double ls = 5;
-int moves = 20;
+int moves = 3;
+int moves2 = 3;
 double cube_x = -100;
 double cube_y = 60;
 double cube_z = 200;
-double cube_size = 50;
+double cube_size = 500;
+double cube2_size = 75;
 double angle = 26.5;
 float angle_change_z = 0;
 float angle_change_y = 0;
@@ -104,11 +106,12 @@ public:
 
 std::vector<Ray> ray(w* h);
 Cube cube1;
-
+Cube cube2;
 
 internal void
 InitRays() {
-	cube1.set(cube_y, (cube_y + cube_size), cube_x, (cube_x + cube_size), cube_z, (cube_z + cube_size));
+	cube1.set(cube_y, (cube_y + cube_size)-480, cube_x, (cube_x + cube_size), cube_z, (cube_z + cube_size));
+	cube2.set(cube_y+50, (cube_y + cube2_size)+50 , cube_x+50, (cube_x + cube2_size)+50, cube_z+150, (cube_z + cube2_size)+150);
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
 			ray[y * w + x].set(
@@ -127,7 +130,7 @@ Colision(double yp, double xp) {
 	double y = ray[yp * w + xp].y;
 	double z = ray[yp * w + xp].z;
 
-	/*if(x >= cube1.ax &&
+	if(x >= cube1.ax &&
 	x <= cube1.bx &&
 	y >= cube1.ay &&
 	y <= cube1.by &&
@@ -136,21 +139,22 @@ Colision(double yp, double xp) {
 		ray[yp * w + xp].hit();
 		if (yp * w + xp - 1 > -1) {
 			float c = atan2((ray[yp * w + xp].hx- ray[yp * w + xp-1].hx), ray[yp * w + xp - 1].hz - (ray[yp * w + xp].hz - ray[yp * w + xp - 1].hz));
-			float d = atan2((ray[yp * w + xp].hy - ray[yp * w + xp - 1].hy), ray[yp * w + xp - 1].hx - (ray[yp * w + xp].hx - ray[yp * w + xp - 1].hz));
+			/*float d = atan2((ray[yp * w + xp].hy - ray[yp * w + xp - 1].hy), ray[yp * w + xp - 1].hx - (ray[yp * w + xp].hx - ray[yp * w + xp - 1].hz));*/
 			ray[yp * w + xp].b = (2*c/PI*180)- ray[yp * w + xp].b;
-			ray[yp * w + xp].a = (2 * d / PI * 180) - ray[yp * w + xp].a;
+			/*ray[yp * w + xp].a = (2 * d / PI * 180) - ray[yp * w + xp].a;*/
 
 			
 		}
 			return false;
 			
-	}*/
-	if (x >= cube1.ax &&
-		x <= cube1.bx &&
-		y >= cube1.ay &&
-		y <= cube1.by &&
-		z >= cube1.az &&
-		z <= cube1.bz) {
+	}
+
+	if (x >= cube2.ax &&
+		x <= cube2.bx &&
+		y >= cube2.ay &&
+		y <= cube2.by &&
+		z >= cube2.az &&
+		z <= cube2.bz) {
 		return true;
 	}
 	
@@ -182,17 +186,19 @@ Colision(double yp, double xp) {
 //}
 
 void
-RayTrace(u32 color, int stry, int strx, double bruh) {
+RayTrace(u32 color, int stry, int strx, int bruh) {
 	for (int i = 0; i <= moves; i++) {
-	for (int y = stry; y < render_state.height / s; y += bruh) {
-		for (int x = strx; x < render_state.width / s; x += bruh) {
-				if (Colision(y, x)) {
-					draw_rect(x * s, y * s, x * s + s, y * s + s, color);
-					ray[y * w + x].reset();
-					break;
+		for (int y = stry; y < render_state.height / s; y += bruh) {
+			for (int x = strx; x < render_state.width / s; x += bruh) {
+				for (int j = 0; j <= moves2; j++) {
+					if (Colision(y, x)) {
+						draw_rect(x * s, y * s, x * s + s, y * s + s, color);
+						ray[y * w + x].reset();
+						break;
+					}
+					/*else draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);*/
+					if (!ray[y * w + x].move()) draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);
 				}
-				/*else draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);*/
-				if (!ray[y * w + x].move()) draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);
 			}
 		}
 	}
