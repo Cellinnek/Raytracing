@@ -30,9 +30,9 @@ public:
 	u32 color;
 	bool move() {
 		x += sin((b) * PI / 180) * cos((a)*PI / 180) * ls;
-		y += sin((a) * PI / 180) * ls;
+		y += (sin((a) * PI / 180)) * (ls);
 		z += cos((b) * PI / 180) * cos((a)*PI / 180) * ls;
-
+		
 		if (sqrt((x-cx) * (x - cx) + (y - cy) * (y - cy) + (z- cz) * (z-cz)) > render_distance) {
 			x = cx;
 			y = cy;
@@ -64,6 +64,7 @@ public:
 		a = (r_y_angle + angle_change_y);
 		b = (r_z_angle + angle_change_z);
 		color = 0x000000;
+
 	}
 	void hit() {
 		
@@ -199,7 +200,7 @@ RayTrace(int stry, int strx, int bruh) {
 			for (int x = strx; x < render_state.width / s; x += bruh) {
 				for (int j = 0; j <= moves2; j++) {
 					if (Colision(y, x)) {
-						draw_rect(x * s, y * s, x * s + s, y * s + s, ray[y * w + x].color);
+						draw_rect(x * s, y * s, x * s + s/1, y * s + s/1, ray[y * w + x].color);
 						ray[y * w + x].reset();
 						break;
 					}
