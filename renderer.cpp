@@ -37,11 +37,11 @@ draw_rect_in_pixels(int x0, int y0, int x1, int y1, u32 color) {
 void
 draw_rect(int x0, int y0, int x1, int y1, u32 color) {
 	for (int y = y0; y < y1; y++) {
-		if (x1-20 + (y-20) * render_state.width < gh*gw- 44019) {
+		/*if (x1 + (y) * render_state.width < gh*gw) {*/
 			u32* pixel = (u32*)render_state.memory + x0 + y * render_state.width;
 			for (int x = x0; x < x1; x++) {
 				*pixel++ = color;
-			}
+			/*}*/
 		}
 	}
 }

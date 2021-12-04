@@ -4,17 +4,17 @@
 #include <stdlib.h> 
 #define PI 3.14159265
 
-double render_distance = 2000;
+double render_distance = 1000;
 //double huj = 1000;
 double cx = 0;
 double cy = 0;
 double cz = 0;
-int s = 5;
+int s = 4;
 int w = gw / s;
 int h = gh / s;
-double ls = 5;
-int moves = 5;
-int moves2 = 5;
+double ls = 3;
+int moves = 10;
+int moves2 = 3;
 double cube_x = -100;
 double cube_y = 60;
 double cube_z = 200;
@@ -111,7 +111,7 @@ Cube cube2;
 
 internal void
 InitRays() {
-	cube1.set(cube_y, (cube_y + cube_size)-480, cube_x, (cube_x + cube_size), cube_z, (cube_z + cube_size));
+	cube1.set(cube_y, (cube_y + cube_size)-490, cube_x, (cube_x + cube_size), cube_z, (cube_z + cube_size));
 	cube2.set(cube_y+50, (cube_y + cube2_size)+50 , cube_x+50, (cube_x + cube2_size)+50, cube_z+150, (cube_z + cube2_size)+150);
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++) {
@@ -119,8 +119,8 @@ InitRays() {
 				//0,
 				//0,
 				//0,
-				(((double)x - w / 2) / w) * 2 * angle, // x i z || xz = ls*cos(konta yegoweho) || x = xz*cos(tego konta) z = xz*sin(tego konta)
-				(((double)y - h / 2) / h) * 2 * angle); // y i xz || y = ls*sin(tego konta)
+				(((double)x - w / 2) / w) * 2 * angle, 
+				(((double)y - h / 2) / h) * 2 * angle);
 		}
 	}
 }
@@ -139,7 +139,7 @@ Colision(double yp, double xp) {
 	z <= cube1.bz) {
 		ray[yp * w + xp].hit();
 		if (yp * w + xp - 1 > -1) {
-			float c = atan2((ray[yp * w + xp].hx- ray[yp * w + xp-1].hx), ray[yp * w + xp - 1].hz - (ray[yp * w + xp].hz - ray[yp * w + xp - 1].hz));
+			float c = atan2((ray[yp * w + xp].hx- ray[yp * w + xp].hx), ray[yp * w + xp].hz - (ray[yp * w + xp].hz - ray[yp * w + xp].hz));
 			/*float d = atan2((ray[yp * w + xp].hy - ray[yp * w + xp - 1].hy), ray[yp * w + xp - 1].hx - (ray[yp * w + xp].hx - ray[yp * w + xp - 1].hz));*/
 			ray[yp * w + xp].b = (2*c/PI*180)- ray[yp * w + xp].b;
 			/*ray[yp * w + xp].a = (2 * d / PI * 180) - ray[yp * w + xp].a;*/
@@ -197,7 +197,7 @@ RayTrace(u32 color, int stry, int strx, int bruh) {
 			for (int x = strx; x < render_state.width / s; x += bruh) {
 				for (int j = 0; j <= moves2; j++) {
 					if (Colision(y, x)) {
-						draw_rect(x * s, y * s, x * s + s, y * s + s, ray[y * w + x].color);
+						draw_rect(x * s, y * s, x * s + s/1, y * s + s/1, ray[y * w + x].color);
 						ray[y * w + x].reset();
 						break;
 					}
