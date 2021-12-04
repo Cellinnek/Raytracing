@@ -6,15 +6,15 @@
 
 double render_distance = 1000;
 //double huj = 1000;
-double cx = 0;
+double cx = -100;
 double cy = 0;
 double cz = 0;
 int s = 4;
 int w = gw / s;
 int h = gh / s;
-double ls = 3;
+double ls = 2;
 int moves = 10;
-int moves2 = 3;
+int moves2 = 5;
 double cube_x = -100;
 double cube_y = 60;
 double cube_z = 200;
@@ -199,7 +199,7 @@ RayTrace(int stry, int strx, int bruh) {
 			for (int x = strx; x < render_state.width / s; x += bruh) {
 				for (int j = 0; j <= moves2; j++) {
 					if (Colision(y, x)) {
-						draw_rect(x * s, y * s, x * s + s/1, y * s + s/1, ray[y * w + x].color);
+						draw_rect(x * s, y * s, x * s + s, y * s + s, ray[y * w + x].color);
 						ray[y * w + x].reset();
 						break;
 					}

@@ -26,8 +26,8 @@ simulate_game(Input* input, float dt) {
 	if (is_down(BUTTON_SHIFT)) cy -= speed * dt;
 	if (is_down(BUTTON_A)) angle_change_z -= 30 * dt;
 	if (is_down(BUTTON_D)) angle_change_z += 30 * dt;
-	//if (is_down(BUTTON_W)) angle_change_y += 30 * dt;
-	//if (is_down(BUTTON_S)) angle_change_y -= 30 * dt;
+	if (is_down(BUTTON_W)) angle_change_y += 30 * dt;
+	if (is_down(BUTTON_S)) angle_change_y -= 30 * dt;
 	
 	MultiRayTracing();
 
