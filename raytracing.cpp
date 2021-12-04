@@ -63,6 +63,7 @@ public:
 		/*hx = 0; hy = 0; hz = 0; hx2 = 0; hz2 = 0; hy2 = 0;*/
 		a = (r_y_angle + angle_change_y);
 		b = (r_z_angle + angle_change_z);
+		color = 0x000000;
 	}
 	void hit() {
 		
@@ -138,7 +139,7 @@ Colision(double yp, double xp) {
 	z >= cube1.az &&
 	z <= cube1.bz) {
 		ray[yp * w + xp].hit();
-		if (yp * w + xp - 1 > -1) {
+		if (yp * w + xp  > 0) {
 			float c = atan2((ray[yp * w + xp].hx- ray[yp * w + xp].hx), ray[yp * w + xp].hz - (ray[yp * w + xp].hz - ray[yp * w + xp].hz));
 			/*float d = atan2((ray[yp * w + xp].hy - ray[yp * w + xp - 1].hy), ray[yp * w + xp - 1].hx - (ray[yp * w + xp].hx - ray[yp * w + xp - 1].hz));*/
 			ray[yp * w + xp].b = (2*c/PI*180)- ray[yp * w + xp].b;
@@ -146,7 +147,8 @@ Colision(double yp, double xp) {
 
 			
 		}
-			return false;
+		ray[yp * w + xp].color -= 0x333333;
+		return false;
 			
 	}
 
@@ -156,16 +158,16 @@ Colision(double yp, double xp) {
 		y <= cube2.by &&
 		z >= cube2.az &&
 		z <= cube2.bz) {
-		ray[yp * w + xp].color = 0x945094;
+		ray[yp * w + xp].color += 0x945094;
 		return true;
 	}
 	
 	if (sqrt((x * x + y * y) + (z - 500) * (z - 500)) < 50) {
-		ray[yp * w + xp].color = 0x507065;
+		ray[yp * w + xp].color += 0x507065;
 		return true;
 	}
 	if (y <= -200 && y >= -205 && (((int)(x + 2000) % 100 >= 50 || (int)(z + 2000) % 100 >= 50) && !((int)(x + 2000) % 100 >= 50 && (int)(z + 2000) % 100 >= 50))) {
-		ray[yp * w + xp].color = 0xffffdf;
+		ray[yp * w + xp].color += 0xddddcd;
 		return true;
 	}
 	return false;
@@ -191,7 +193,7 @@ Colision(double yp, double xp) {
 //}
 
 void
-RayTrace(u32 color, int stry, int strx, int bruh) {
+RayTrace(int stry, int strx, int bruh) {
 	for (int i = 0; i <= moves; i++) {
 		for (int y = stry; y < render_state.height / s; y += bruh) {
 			for (int x = strx; x < render_state.width / s; x += bruh) {
@@ -202,7 +204,10 @@ RayTrace(u32 color, int stry, int strx, int bruh) {
 						break;
 					}
 					/*else draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);*/
-					if (!ray[y * w + x].move()) draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);
+					if (!ray[y * w + x].move()) {
+						draw_rect(x * s, y * s, x * s + s, y * s + s, 00000000);
+						ray[y * w + x].color = 0x000000;
+					}
 				}
 			}
 		}
@@ -211,22 +216,22 @@ RayTrace(u32 color, int stry, int strx, int bruh) {
 
 internal void
 MultiRayTracing() {
-	std::thread ray0(RayTrace, 0xffffff, 0, 0, 4);
-	std::thread ray1(RayTrace, 0xffffff, 0, 1, 4);
-	std::thread ray2(RayTrace, 0xffffff, 0, 2, 4);
-	std::thread ray3(RayTrace, 0xffffff, 0, 3, 4);
-	std::thread ray4(RayTrace, 0xffffff, 1, 0, 4);
-	std::thread ray5(RayTrace, 0xffffff, 1, 1, 4);
-	std::thread ray6(RayTrace, 0xffffff, 1, 2, 4);
-	std::thread ray7(RayTrace, 0xffffff, 1, 3, 4);
-	std::thread ray8(RayTrace, 0xffffff, 2, 0, 4);
-	std::thread ray9(RayTrace, 0xffffff, 2, 1, 4);
-	std::thread ray10(RayTrace, 0xffffff, 2, 2, 4);
-	std::thread ray11(RayTrace, 0xffffff, 2, 3, 4);
-	std::thread ray12(RayTrace, 0xffffff, 3, 0, 4);
-	std::thread ray13(RayTrace, 0xffffff, 3, 1, 4);
-	std::thread ray14(RayTrace, 0xffffff, 3, 2, 4);
-	std::thread ray15(RayTrace, 0xffffff, 3, 3, 4);
+	std::thread ray0(RayTrace, 0, 0, 4);
+	std::thread ray1(RayTrace, 0, 1, 4);
+	std::thread ray2(RayTrace, 0, 2, 4);
+	std::thread ray3(RayTrace, 0, 3, 4);
+	std::thread ray4(RayTrace, 1, 0, 4);
+	std::thread ray5(RayTrace, 1, 1, 4);
+	std::thread ray6(RayTrace, 1, 2, 4);
+	std::thread ray7(RayTrace, 1, 3, 4);
+	std::thread ray8(RayTrace, 2, 0, 4);
+	std::thread ray9(RayTrace, 2, 1, 4);
+	std::thread ray10(RayTrace, 2, 2, 4);
+	std::thread ray11(RayTrace, 2, 3, 4);
+	std::thread ray12(RayTrace, 3, 0, 4);
+	std::thread ray13(RayTrace, 3, 1, 4);
+	std::thread ray14(RayTrace, 3, 2, 4);
+	std::thread ray15(RayTrace, 3, 3, 4);
 
 	ray0.join();
 	ray1.join();
